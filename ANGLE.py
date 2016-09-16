@@ -56,7 +56,6 @@ angle_spec = ["implementation_id", "ANGLE",
 #add my codes
 
 spi = spidev.SpiDev()
-spi.open(0,0)
 
 def readadc(channel):
 	adc = spi.xfer2([1,(8+channel)<<4,0])
@@ -107,8 +106,7 @@ class ANGLE(OpenRTM_aist.DataFlowComponentBase):
 		self._ANGLEPIN = [0]
 		
 		# </rtc-template>
-
-
+		
 
 		 
 	##
@@ -145,7 +143,6 @@ class ANGLE(OpenRTM_aist.DataFlowComponentBase):
 	#
 	#	# 
 	#def onFinalize(self):
-	#
 	#	return RTC.RTC_OK
 	
 	#	##
@@ -159,7 +156,7 @@ class ANGLE(OpenRTM_aist.DataFlowComponentBase):
 	#	#
 	#	#
 	#def onStartup(self, ec_id):
-	#
+
 	#	return RTC.RTC_OK
 	
 	#	##
@@ -186,9 +183,9 @@ class ANGLE(OpenRTM_aist.DataFlowComponentBase):
 	#	# @return RTC::ReturnCode_t
 	#	#
 	#	#
-	#def onActivated(self, ec_id):
-	#
-	#	return RTC.RTC_OK
+	def onActivated(self, ec_id):
+		spi.open(0,0)
+		return RTC.RTC_OK
 	
 	#	##
 	#	#
@@ -200,9 +197,10 @@ class ANGLE(OpenRTM_aist.DataFlowComponentBase):
 	#	# @return RTC::ReturnCode_t
 	#	#
 	#	#
-	#def onDeactivated(self, ec_id):
-	#
-	#	return RTC.RTC_OK
+	def onDeactivated(self, ec_id):
+		spi.close()
+		print"spi closed"
+		return RTC.RTC_OK
 	
 		##
 		#
